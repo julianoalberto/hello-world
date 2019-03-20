@@ -1,0 +1,14 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "hello-world app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "julianoalberto@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "expressjs": "^1.0.1"
+  }
+}

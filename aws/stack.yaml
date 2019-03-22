@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Node app
+Resources:
+    SSHSecurityGroup:
+        Type: 'AWS::EC2::SecurityGroup'
+        Properties:
+            GroupDescription: 'Enable SSH access via port 22'
+            SecurityGroupIngress:
+                -
+                    CidrIp: '0.0.0.0/0'
+                    Description: 'Allowed from anywhere'
+                    FromPort: '22'
+                    ToPort: '22'
+                    IpProtocol: 'tcp'
+    HTTPSecurityGroup:
+        Type: 'AWS::EC2::SecurityGroup'
+        Properties:
+            GroupDescription: 'Enable SSH access via port 3000'
+            SecurityGroupIngress:
+                -
+                    CidrIp: '0.0.0.0/0'
+                    Description: 'Allowed from anywhere'
+                    FromPort: '22'
+                    ToPort: '3000'
+                    IpProtocol: 'tcp'
+    EC2Instance:
+        Type: 'AWS::EC2::Instance'
+        Properties:
+            ImageId: 'ami-02bcbb802e03574ba'
+            InstanceType: 't2.micro'
+            KeyName: 'julianoalberto'
+            SecurityGroupIds:
+                - !GetAtt SSHSecurityGroup.GroupId
+            UserData:
+              Fn::Base64:
+                Fn::Join:
+                  - ""
+                  -
+                    - "#!/bin/bash -ex"
+                    - "\n"
+                    - "sudo yum update -y"
+                    - "\n"
+                    - "sudo amazon-linux-extras install -y epel"
+                    - "\n"
+                    - "sudo yum install -y nodejs"
+                    - "\n"
+                    - "sudo yum install -y git"
+                    - "\n"
+Outputs:
+  InstanceId:
+    Description: InstanceId of the newly created EC2 instance
+    Value: !Ref 'EC2Instance'
+  AZ:
+    Description: Availability Zone of the newly created EC2 instance
+    Value: !GetAtt [EC2Instance, AvailabilityZone]
+  PublicDNS:
+    Description: Public DNSName of the newly created EC2 instance
+    Value: !GetAtt [EC2Instance, PublicDnsName]
+  PublicIP:
+    Description: Public IP address of the newly created EC2 instance
+    Value: !GetAtt [EC2Instance, PublicIp]

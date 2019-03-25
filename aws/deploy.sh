@@ -11,3 +11,7 @@ aws cloudformation deploy --template-file stack.yaml --stack-name planetStack --
 #sudo yum install -y git
 
 #cd ~ && git clone https://github.com/julianoalberto/hello-world.git && cd hello-world && npm install && node .
+
+
+
+#/var/lib/cloud/instances/i-055ddc7d8d7fa5466/scripts/part-001

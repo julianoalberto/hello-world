@@ -20,7 +20,7 @@ Resources:
                 -
                     CidrIp: '0.0.0.0/0'
                     Description: 'Allowed from anywhere'
-                    FromPort: '22'
+                    FromPort: '3000'
                     ToPort: '3000'
                     IpProtocol: 'tcp'
     EC2Instance:
@@ -31,6 +31,7 @@ Resources:
             KeyName: 'julianoalberto'
             SecurityGroupIds:
                 - !GetAtt SSHSecurityGroup.GroupId
+                - !GetAtt HTTPSecurityGroup.GroupId
             UserData:
               Fn::Base64:
                 Fn::Join:
@@ -45,6 +46,16 @@ Resources:
                     - "sudo yum install -y nodejs"
                     - "\n"
                     - "sudo yum install -y git"
+                    - "\n"
+                    - "cd ~"
+                    - "\n"
+                    - "git clone https://github.com/julianoalberto/hello-world.git"
+                    - "\n"
+                    - "cd hello-world"
+                    - "\n"
+                    - "npm install"
+                    - "\n"
+                    - "node . &"
                     - "\n"
 Outputs:
   InstanceId:

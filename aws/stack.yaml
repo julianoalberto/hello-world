@@ -12,10 +12,10 @@ Resources:
                     FromPort: '22'
                     ToPort: '22'
                     IpProtocol: 'tcp'
-    HTTPSecurityGroup:
+    NodeSecurityGroup:
         Type: 'AWS::EC2::SecurityGroup'
         Properties:
-            GroupDescription: 'Enable SSH access via port 3000'
+            GroupDescription: 'Node'
             SecurityGroupIngress:
                 -
                     CidrIp: '0.0.0.0/0'
@@ -23,6 +23,17 @@ Resources:
                     FromPort: '3000'
                     ToPort: '3000'
                     IpProtocol: 'tcp'
+    HTTPSecurityGroup:
+        Type: 'AWS::EC2::SecurityGroup'
+        Properties:
+            GroupDescription: 'HTPP access'
+            SecurityGroupIngress:
+                -
+                    CidrIp: '0.0.0.0/0'
+                    Description: 'Allowed from anywhere'
+                    FromPort: '80'
+                    ToPort: '80'
+                    IpProtocol: 'tcp'                   
     EC2Instance:
         Type: 'AWS::EC2::Instance'
         Properties:
@@ -31,7 +42,7 @@ Resources:
             KeyName: 'julianoalberto'
             SecurityGroupIds:
                 - !GetAtt SSHSecurityGroup.GroupId
-                - !GetAtt HTTPSecurityGroup.GroupId
+                - !GetAtt NodeSecurityGroup.GroupId
             UserData:
               Fn::Base64:
                 Fn::Join:
@@ -57,6 +68,40 @@ Resources:
                     - "\n"
                     - "node . &"
                     - "\n"
+
+    PlanetTargetGroup:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      Properties:
+        Name: PlanetTargetGroup
+        VpcId: vpc-487b7720 #!Ref VPC
+        Port: 80
+        Protocol: HTTP
+        Targets:
+        - Id:
+            Ref: EC2Instance
+          Port: 3000
+
+    PlanetLoadBalancer:
+        Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+        Properties:
+          Name: PlanetLoadBalancer
+          Subnets: 
+            - subnet-5222163a
+            - subnet-855a38ff
+          SecurityGroups:
+            - !GetAtt HTTPSecurityGroup.GroupId
+
+    LoadBalancerListener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+        LoadBalancerArn: !Ref PlanetLoadBalancer
+        Port: 80
+        Protocol: HTTP
+        DefaultActions:
+          - Type: forward
+            TargetGroupArn: !Ref PlanetTargetGroup
+        
+
 Outputs:
   InstanceId:
     Description: InstanceId of the newly created EC2 instance

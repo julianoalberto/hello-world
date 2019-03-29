@@ -2,7 +2,8 @@
 #aws ec2 create-key-pair --key-name planetKey > planetKey.pem
 #chmod 400 planetKey.pem
 
-aws cloudformation deploy --template-file stack.yaml --stack-name planetStack --output text
+aws cloudformation deploy --template-file stack.yaml --stack-name planetStack --output text --parameter-overrides InstanceKeyName=julianoalberto VPC=vpc-487b7720
+
 
 
 #sudo yum update -y

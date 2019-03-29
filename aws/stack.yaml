@@ -1,5 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
+
 Description: Node app
+Parameters: 
+  InstanceKeyName: 
+    Type: String
+    Description: Enter an existing KeyName.
+
+  VPC: 
+    Type: String
+    Description: Your VpcId.
+
 Resources:
     InstanceSecurityGroup:
         Type: 'AWS::EC2::SecurityGroup'
@@ -36,42 +46,7 @@ Resources:
             AvailabilityZone: us-east-2b
             ImageId: 'ami-02bcbb802e03574ba'
             InstanceType: 't2.micro'
-            KeyName: 'julianoalberto'
-            SecurityGroupIds:
-                - !GetAtt InstanceSecurityGroup.GroupId
-            UserData:
-              Fn::Base64:
-                Fn::Join:
-                  - ""
-                  -
-                    - "#!/bin/bash -ex"
-                    - "\n"
-                    - "sudo yum update -y"
-                    - "\n"
-                    - "sudo amazon-linux-extras install -y epel"
-                    - "\n"
-                    - "sudo yum install -y nodejs"
-                    - "\n"
-                    - "sudo yum install -y git"
-                    - "\n"
-                    - "cd ~"
-                    - "\n"
-                    - "git clone https://github.com/julianoalberto/hello-world.git"
-                    - "\n"
-                    - "cd hello-world"
-                    - "\n"
-                    - "npm install"
-                    - "\n"
-                    - "node . &"
-                    - "\n"
-
-    EC2Instance2:
-        Type: 'AWS::EC2::Instance'
-        Properties:
-            AvailabilityZone: us-east-2c
-            ImageId: 'ami-02bcbb802e03574ba'
-            InstanceType: 't2.micro'
-            KeyName: 'julianoalberto'
+            KeyName: !Ref InstanceKeyName
             SecurityGroupIds:
                 - !GetAtt InstanceSecurityGroup.GroupId
             UserData:
@@ -104,15 +79,12 @@ Resources:
       Type: AWS::ElasticLoadBalancingV2::TargetGroup
       Properties:
         Name: PlanetTargetGroup
-        VpcId: vpc-487b7720 #!Ref VPC
+        VpcId: !Ref VPC
         Port: 80
         Protocol: HTTP
         Targets:
           - Id:
               Ref: EC2Instance1
-            Port: 3000
-          - Id:
-              Ref: EC2Instance2
             Port: 3000
 
     PlanetLoadBalancer:

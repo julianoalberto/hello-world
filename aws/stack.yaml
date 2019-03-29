@@ -1,29 +1,24 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Node app
 Resources:
-    SSHSecurityGroup:
+    InstanceSecurityGroup:
         Type: 'AWS::EC2::SecurityGroup'
         Properties:
-            GroupDescription: 'Enable SSH access via port 22'
+            GroupDescription: 'Instance security'
             SecurityGroupIngress:
                 -
-                    CidrIp: '0.0.0.0/0'
-                    Description: 'Allowed from anywhere'
-                    FromPort: '22'
-                    ToPort: '22'
-                    IpProtocol: 'tcp'
-    NodeSecurityGroup:
-        Type: 'AWS::EC2::SecurityGroup'
-        Properties:
-            GroupDescription: 'Node'
-            SecurityGroupIngress:
+                  CidrIp: '0.0.0.0/0'
+                  Description: 'SSH access'
+                  FromPort: '22'
+                  ToPort: '22'
+                  IpProtocol: 'tcp'
                 -
-                    CidrIp: '0.0.0.0/0'
-                    Description: 'Allowed from anywhere'
-                    FromPort: '3000'
-                    ToPort: '3000'
-                    IpProtocol: 'tcp'
-    HTTPSecurityGroup:
+                  SourceSecurityGroupId: !GetAtt LoadBalancerSecurityGroup.GroupId
+                  IpProtocol: -1
+                  FromPort: 3000
+                  ToPort: 3000
+                
+    LoadBalancerSecurityGroup:
         Type: 'AWS::EC2::SecurityGroup'
         Properties:
             GroupDescription: 'HTPP access'
@@ -33,16 +28,52 @@ Resources:
                     Description: 'Allowed from anywhere'
                     FromPort: '80'
                     ToPort: '80'
-                    IpProtocol: 'tcp'                   
-    EC2Instance:
+                    IpProtocol: 'tcp'   
+                                  
+    EC2Instance1:
         Type: 'AWS::EC2::Instance'
         Properties:
+            AvailabilityZone: us-east-2b
             ImageId: 'ami-02bcbb802e03574ba'
             InstanceType: 't2.micro'
             KeyName: 'julianoalberto'
             SecurityGroupIds:
-                - !GetAtt SSHSecurityGroup.GroupId
-                - !GetAtt NodeSecurityGroup.GroupId
+                - !GetAtt InstanceSecurityGroup.GroupId
+            UserData:
+              Fn::Base64:
+                Fn::Join:
+                  - ""
+                  -
+                    - "#!/bin/bash -ex"
+                    - "\n"
+                    - "sudo yum update -y"
+                    - "\n"
+                    - "sudo amazon-linux-extras install -y epel"
+                    - "\n"
+                    - "sudo yum install -y nodejs"
+                    - "\n"
+                    - "sudo yum install -y git"
+                    - "\n"
+                    - "cd ~"
+                    - "\n"
+                    - "git clone https://github.com/julianoalberto/hello-world.git"
+                    - "\n"
+                    - "cd hello-world"
+                    - "\n"
+                    - "npm install"
+                    - "\n"
+                    - "node . &"
+                    - "\n"
+
+    EC2Instance2:
+        Type: 'AWS::EC2::Instance'
+        Properties:
+            AvailabilityZone: us-east-2c
+            ImageId: 'ami-02bcbb802e03574ba'
+            InstanceType: 't2.micro'
+            KeyName: 'julianoalberto'
+            SecurityGroupIds:
+                - !GetAtt InstanceSecurityGroup.GroupId
             UserData:
               Fn::Base64:
                 Fn::Join:
@@ -77,9 +108,12 @@ Resources:
         Port: 80
         Protocol: HTTP
         Targets:
-        - Id:
-            Ref: EC2Instance
-          Port: 3000
+          - Id:
+              Ref: EC2Instance1
+            Port: 3000
+          - Id:
+              Ref: EC2Instance2
+            Port: 3000
 
     PlanetLoadBalancer:
         Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -89,7 +123,7 @@ Resources:
             - subnet-5222163a
             - subnet-855a38ff
           SecurityGroups:
-            - !GetAtt HTTPSecurityGroup.GroupId
+            - !GetAtt LoadBalancerSecurityGroup.GroupId
 
     LoadBalancerListener:
       Type: AWS::ElasticLoadBalancingV2::Listener
@@ -100,18 +134,3 @@ Resources:
         DefaultActions:
           - Type: forward
             TargetGroupArn: !Ref PlanetTargetGroup
-        
-
-Outputs:
-  InstanceId:
-    Description: InstanceId of the newly created EC2 instance
-    Value: !Ref 'EC2Instance'
-  AZ:
-    Description: Availability Zone of the newly created EC2 instance
-    Value: !GetAtt [EC2Instance, AvailabilityZone]
-  PublicDNS:
-    Description: Public DNSName of the newly created EC2 instance
-    Value: !GetAtt [EC2Instance, PublicDnsName]
-  PublicIP:
-    Description: Public IP address of the newly created EC2 instance
-    Value: !GetAtt [EC2Instance, PublicIp]

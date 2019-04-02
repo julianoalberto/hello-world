@@ -1,14 +1,37 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
-Description: Node app
+Description: Node app on EC2 with load balancing
+
 Parameters: 
   InstanceKeyName: 
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Your key pair to access the EC2 instance.
+    Default: julianoalberto
+
+  InstanceImageId:
+    Type: AWS::EC2::Image::Id
+    Description: ImageId for EC2 instance.
+    Default: ami-02bcbb802e03574ba
+
+  InstanceType:
     Type: String
-    Description: Enter an existing KeyName.
+    Description: Type of EC2 instance.
+    Default: t2.micro
+
+  AvailabilityZone:
+    Type: AWS::EC2::AvailabilityZone::Name
+    Description: Availability zone for EC2 instance.
+    Default: us-east-2b
 
   VPC: 
-    Type: String
-    Description: Your VpcId.
+    Type: AWS::EC2::VPC::Id
+    Description: VPC ID for target group.
+    Default: vpc-487b7720
+
+  LoadBalancerSubnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets for load balancer.
+    Default: 'subnet-5222163a,subnet-855a38ff'
 
 Resources:
     InstanceSecurityGroup:
@@ -43,9 +66,9 @@ Resources:
     EC2Instance1:
         Type: 'AWS::EC2::Instance'
         Properties:
-            AvailabilityZone: us-east-2b
-            ImageId: 'ami-02bcbb802e03574ba'
-            InstanceType: 't2.micro'
+            AvailabilityZone: !Ref AvailabilityZone
+            ImageId: !Ref InstanceImageId
+            InstanceType: !Ref InstanceType
             KeyName: !Ref InstanceKeyName
             SecurityGroupIds:
                 - !GetAtt InstanceSecurityGroup.GroupId
@@ -91,9 +114,7 @@ Resources:
         Type: AWS::ElasticLoadBalancingV2::LoadBalancer
         Properties:
           Name: PlanetLoadBalancer
-          Subnets: 
-            - subnet-5222163a
-            - subnet-855a38ff
+          Subnets: !Ref LoadBalancerSubnets
           SecurityGroups:
             - !GetAtt LoadBalancerSecurityGroup.GroupId
 

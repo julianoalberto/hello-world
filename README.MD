@@ -9,12 +9,12 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
 
 
 **Quickstart**
-1. Clone this repository:
-```shell script
+1. Clone or download this repository:
+    - Clonning: ```shell script
 git clone https://github.com/julianoalberto/hello-world.git
 
 ```
-Or download it as a zip file from [https://github.com/julianoalberto/hello-world/archive/master.zip](https://github.com/julianoalberto/hello-world/archive/master.zip)
+    - Downloading:[https://github.com/julianoalberto/hello-world/archive/master.zip](https://github.com/julianoalberto/hello-world/archive/master.zip)
 
 2. Change to hello-world/aws folder:
 ```shell script

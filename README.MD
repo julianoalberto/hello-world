@@ -10,17 +10,14 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
 
 **Quickstart**
 1. Clone or download this repository:
-    - Clonning: ```shell script
-git clone https://github.com/julianoalberto/hello-world.git
-
-```
-    - Downloading:[https://github.com/julianoalberto/hello-world/archive/master.zip](https://github.com/julianoalberto/hello-world/archive/master.zip)
+    - Clonning: `git clone https://github.com/julianoalberto/hello-world.git`
+    - Downloading: [https://github.com/julianoalberto/hello-world/archive/master.zip](https://github.com/julianoalberto/hello-world/archive/master.zip)
 
 2. Change to hello-world/aws folder:
-```shell script
+```language
 cd hellow-world/aws
 ```
 3. Run deploy.sh:
-```shell script
+```language
 sh deploy.sh
 ```

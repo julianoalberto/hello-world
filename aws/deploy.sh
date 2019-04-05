@@ -1,3 +1,4 @@
+#!/bin/bash
 aws cloudformation deploy \
 --region us-east-2 \
 --template-file stack.yaml \

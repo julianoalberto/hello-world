@@ -4,6 +4,7 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
 **Prerequisites**
 - An active [AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
 - A Linux machine with [AWS Command Line Interface](https://aws.amazon.com/cli/) configured for your account.
+- An [EC2 Key Pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html).
 - [git](https://git-scm.com/) if you want to clone the project using command line. If you prefer, you may download the project instead of clonning it. This way, git is optional.
 - Optionally, if you want to run the application locally, you will need to install [Node.js](https://nodejs.org/en/download/package-manager/).
 

@@ -127,3 +127,8 @@ Resources:
         DefaultActions:
           - Type: forward
             TargetGroupArn: !Ref PlanetTargetGroup
+
+Outputs:
+  LoadBalancerURL:
+    Description: URL used to access the application
+    Value: !GetAtt PlanetLoadBalancer.DNSName

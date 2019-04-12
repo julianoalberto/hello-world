@@ -19,9 +19,7 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
 3. Edit `hellow-world/aws/deploy.sh` to change the below parameters that will be used by AWS CLI to create the infrastructure and deploy the application. Most of them must be set with values pertaining to your AWS account.
 
 - region: the [AWS region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) where this stack will be deployed.
-```shell
-region=us-east-2
-```
+`region=us-east-2`
 
 - availabilityZone: [AWS availability zone](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) for this stack.
 ```shell

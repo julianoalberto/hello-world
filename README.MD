@@ -16,7 +16,7 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
 
 2. If you downloaded the repository, extract the downloaded zip file.
 
-3. Edit hellow-world/aws/deploy.sh to change the below parameters that will be used by AWS CLI to create the infrastructure and deploy the application. Most of them must be set with values pertaining to your AWS account.
+3. Edit `hellow-world/aws/deploy.sh` to change the below parameters that will be used by AWS CLI to create the infrastructure and deploy the application. Most of them must be set with values pertaining to your AWS account.
 
 - region: the [AWS region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) where this stack will be deployed.
 ```shell
@@ -57,12 +57,12 @@ loadBalancerSubnets=subnet-5222163a,subnet-855a38ff
 stackName=planetStack
 ```
 
-4. Change to hello-world/aws folder:
+4. Change to `hello-world/aws` folder:
 ```shell
 cd hellow-world/aws
 ```
 
-5. Run deploy.sh:
+5. Run `deploy.sh`:
 ```shell
 sh deploy.sh
 ```

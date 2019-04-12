@@ -14,11 +14,65 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
     - Clonning: `git clone https://github.com/julianoalberto/hello-world.git`
     - Downloading: [https://github.com/julianoalberto/hello-world/archive/master.zip](https://github.com/julianoalberto/hello-world/archive/master.zip)
 
-2. Change to hello-world/aws folder:
+2. If you downloaded the repository, extract the downloaded zip file.
+
+3. Edit hellow-world/aws/deploy.sh to change the below parameters that will be used by AWS CLI to create the infrastructure and deploy the application. Most of them must be set with values pertaining to your AWS account.
+
+- region: the [AWS region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) where this stack will be deployed.
+```shell
+region=us-east-2
+```
+
+- availabilityZone: [AWS availability zone](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) for this stack.
+```shell
+availabilityZone=us-east-2b
+```
+
+- instanceType: the [EC2 instance type](https://aws.amazon.com/ec2/instance-types/). Make sure it is available in the selected region.
+```shell
+instanceType=t2.micro
+```
+
+- instanceImageId: the [EC2 image](https://aws.amazon.com/amazon-linux-ami/). Make sure it is available in the selected region.
+```shell
+instanceImageId=ami-02bcbb802e03574ba
+```
+
+- instanceKeyName: your [key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair) for accessing the EC2 instance.
+```shell
+instanceKeyName=julianoalberto
+```
+- vpc: your [VPC](https://console.aws.amazon.com/vpc/).
+```shell
+vpc=vpc-487b7720
+```
+
+- loadBalancerSubnets: enter two [subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html) separated by comma. They will be used by the load balancer.
+```shell
+loadBalancerSubnets=subnet-5222163a,subnet-855a38ff
+```
+
+- stackName: the name of this [CloudFormation](https://www.amazonaws.cn/en/cloudformation/) stack. This does not need to be changed, unless you want to name it differently.
+```shell
+stackName=planetStack
+```
+
+4. Change to hello-world/aws folder:
 ```shell
 cd hellow-world/aws
 ```
-3. Run deploy.sh:
+
+5. Run deploy.sh:
 ```shell
 sh deploy.sh
 ```
+
+6. If all runs fine, the command output will be similar to this:
+```shell
+Waiting for changeset to be created..
+Waiting for stack create/update to complete
+Successfully created/updated stack - planetStack
+App URL: PlanetLoadBalancer-1231455801.us-east-2.elb.amazonaws.com
+```
+
+7. Access the output App URL with a browser and see the hello-world application running.

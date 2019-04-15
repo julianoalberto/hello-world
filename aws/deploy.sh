@@ -1,12 +1,12 @@
 #!/bin/bash
-instanceKeyName=julianoalberto
+region=us-east-2
+availabilityZone=us-east-2b
 instanceType=t2.micro
 instanceImageId=ami-02bcbb802e03574ba
-availabilityZone=us-east-2b
+instanceKeyName=julianoalberto
 vpc=vpc-487b7720
 loadBalancerSubnets=subnet-5222163a,subnet-855a38ff
 stackName=planetStack
-region=us-east-2
 
 aws cloudformation deploy \
 --region $region \

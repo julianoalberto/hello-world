@@ -103,4 +103,4 @@ npm install
 node .
 ```
 
-4. Access the application on [localhost:3000](http://localhost:3000)
+4. Access the application at [localhost:3000](http://localhost:3000)

@@ -16,7 +16,7 @@ This is an example of how to create a simple [Node.js](http://nodejs.org) applic
 
 2. If you downloaded the repository, extract the downloaded zip file.
 
-3. Edit `hellow-world/aws/deploy.sh` to change the below parameters that will be used by AWS CLI to create the infrastructure and deploy the application. Most of them must be set with values pertaining to your AWS account.
+3. Enter the folder where you extracted or cloned the project and edit `aws/deploy.sh` to change the below parameters that will be used by AWS CLI to create the infrastructure and deploy the application. Most of them must be set with values pertaining to your AWS account.
 
 - region: the [AWS region](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html) where this stack will be deployed.
 ```shell
@@ -57,9 +57,9 @@ loadBalancerSubnets=subnet-5222163a,subnet-855a38ff
 stackName=planetStack
 ```
 
-4. Change to `hello-world/aws` folder:
+4. Enter the `aws` folder:
 ```shell
-cd hellow-world/aws
+cd aws
 ```
 
 5. Run `deploy.sh`:
@@ -88,3 +88,19 @@ App URL: PlanetLoadBalancer-1231455801.us-east-2.elb.amazonaws.com
   ```shell
  aws cloudformation delete-stack --stack-name planetStack
   ```
+
+**Running locally**
+
+1. Clone or download this repository:
+- Clonning: `git clone https://github.com/julianoalberto/hello-world.git`
+- Downloading: [https://github.com/julianoalberto/hello-world/archive/master.zip](https://github.com/julianoalberto/hello-world/archive/master.zip)
+
+2. If you downloaded the repository, extract the downloaded zip file.
+
+3. Enter the folder where you extracted or cloned the project and run:
+```shell
+npm install
+node .
+```
+
+4. Access the application on localhost:3000

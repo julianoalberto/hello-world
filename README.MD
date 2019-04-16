@@ -84,7 +84,7 @@ App URL: PlanetLoadBalancer-1231455801.us-east-2.elb.amazonaws.com
  aws cloudformation describe-stack-events --stack-name planetStack --output json
  ```
  - look for events with ResourceStatus equals to CREATE_FAILED. This will indicate which resource is failing to be created. Most likely, resources creation will fail due to misconfigurations in the parameters done in step 3.
- - fix the parameters in deploy.sh and before running it again, delete the stack:
+ - fix the parameters in ```deploy.sh``` and before running it again, delete the stack:
   ```shell
  aws cloudformation delete-stack --stack-name planetStack
   ```
@@ -103,4 +103,4 @@ npm install
 node .
 ```
 
-4. Access the application on localhost:3000
+4. Access the application on [localhost:3000](localhost:3000)
